@@ -41,7 +41,7 @@ class GetCharactersUseCaseImplTest {
 
     @ExperimentalCoroutinesApi
     @Test
-    fun `should validate flow paging data creation when inboke from use case is called`() =
+    fun `should validate flow paging data creation when invoke from use case is called`() =
         runBlockingTest {
             whenever(repository.getCharacters(""))
                 .thenReturn(fakePagingSource)
