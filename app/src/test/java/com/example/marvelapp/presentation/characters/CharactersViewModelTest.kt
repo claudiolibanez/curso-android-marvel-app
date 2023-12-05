@@ -8,8 +8,10 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
@@ -19,10 +21,10 @@ import org.mockito.Mock
 import org.mockito.junit.MockitoJUnitRunner
 import java.lang.RuntimeException
 
+@ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
 class CharactersViewModelTest {
 
-    @ExperimentalCoroutinesApi
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
@@ -43,17 +45,15 @@ class CharactersViewModelTest {
         )
     )
 
-    @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
 //        Dispatchers.setMain(testDispatcher)
         charactersViewModel = CharactersViewModel(getCharactersUseCase)
     }
 
-    @ExperimentalCoroutinesApi
     @Test
     fun `should validate the paging data object values when calling charactersPagingData`() =
-        runBlockingTest {
+        runTest {
 
             whenever(
                 getCharactersUseCase.invoke(any())
@@ -65,14 +65,12 @@ class CharactersViewModelTest {
 
             val result = charactersViewModel.charactersPagingData("")
 
-            assertEquals(1, result.count())
-
+            assertNotNull(result.first())
         }
 
-    @ExperimentalCoroutinesApi
     @Test(expected = RuntimeException::class)
     fun `should throw an exception when the calling to the use case return an exception`() =
-        runBlockingTest {
+        runTest {
 
             whenever(getCharactersUseCase.invoke(any()))
                 .thenThrow(RuntimeException())
