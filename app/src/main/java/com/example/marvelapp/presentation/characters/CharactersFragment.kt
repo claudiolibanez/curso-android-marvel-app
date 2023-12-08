@@ -32,7 +32,29 @@ class CharactersFragment : Fragment() {
     @Inject
     lateinit var imageLoader: ImageLoader
 
-    private lateinit var charactersAdapter: CharactersAdapter
+//    private lateinit var charactersAdapter: CharactersAdapter
+
+    private val charactersAdapter: CharactersAdapter by lazy {
+        CharactersAdapter(
+            imageLoader
+        ) { character, view ->
+            val extras = FragmentNavigatorExtras(
+                view to character.name
+            )
+
+            val directions = CharactersFragmentDirections
+                .actionCharactersFragmentToDetailFragment(
+                    character.name,
+                    DetailViewArg(
+                        characterId = character.id,
+                        name = character.name,
+                        imageUrl = character.imageUrl
+                    )
+                )
+
+            findNavController().navigate(directions, extras)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,13 +75,22 @@ class CharactersFragment : Fragment() {
 
         observeInitialLoadingState()
 
-        lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.charactersPagingData("").collect { pagingData ->
-                    charactersAdapter.submitData(pagingData)
+        viewModel.state.observe(viewLifecycleOwner) { uiState ->
+            when (uiState) {
+                is CharactersViewModel.UiState.SearchResult -> {
+                    charactersAdapter.submitData(viewLifecycleOwner.lifecycle, uiState.data)
                 }
             }
         }
+        viewModel.searchCharacters()
+
+//        lifecycleScope.launch {
+//            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+//                viewModel.charactersPagingData("").collect { pagingData ->
+//                    charactersAdapter.submitData(pagingData)
+//                }
+//            }
+//        }
 
 //        charactersAdapter.submitList(
 //            fakeList()
@@ -89,28 +120,30 @@ class CharactersFragment : Fragment() {
 //    }
 
     private fun initCharactersAdapter() {
-        charactersAdapter = CharactersAdapter(
-            imageLoader
-        ) { character, view ->
-            val extras = FragmentNavigatorExtras(
-                view to character.name
-            )
+//        charactersAdapter = CharactersAdapter(
+//            imageLoader
+//        ) { character, view ->
+//            val extras = FragmentNavigatorExtras(
+//                view to character.name
+//            )
+//
+//            val directions = CharactersFragmentDirections
+//                .actionCharactersFragmentToDetailFragment(
+//                    character.name,
+//                    DetailViewArg(
+//                        characterId = character.id,
+//                        name = character.name,
+//                        imageUrl = character.imageUrl
+//                    )
+//                )
+//
+//            findNavController().navigate(directions, extras)
+//        }
 
-            val directions = CharactersFragmentDirections
-                .actionCharactersFragmentToDetailFragment(
-                    character.name,
-                    DetailViewArg(
-                        characterId = character.id,
-                        name = character.name,
-                        imageUrl = character.imageUrl
-                    )
-                )
-
-            findNavController().navigate(directions, extras)
-        }
+        postponeEnterTransition()
 
         with(binding.recyclerCharacters) {
-            scrollToPosition(0)
+//            scrollToPosition(0)
 
             setHasFixedSize(true)
 
@@ -119,6 +152,11 @@ class CharactersFragment : Fragment() {
                     charactersAdapter::retry
                 )
             )
+
+            viewTreeObserver.addOnDrawListener {
+                startPostponedEnterTransition()
+                true
+            }
         }
     }
 
