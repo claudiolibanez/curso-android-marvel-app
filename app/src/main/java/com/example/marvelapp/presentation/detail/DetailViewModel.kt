@@ -1,28 +1,48 @@
 package com.example.marvelapp.presentation.detail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.example.core.domain.model.Comic
-import com.example.core.domain.model.Event
+import com.example.core.usecase.AddFavoriteUseCase
+import com.example.core.usecase.CheckFavoriteUseCase
 import com.example.core.usecase.GetCharacterCategoriesUseCase
-import com.example.core.usecase.base.ResultStatus
+import com.example.core.usecase.RemoveFavoriteUseCase
+import com.example.core.usecase.base.CoroutineDispatchers
 import com.example.marvelapp.R
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val getCharacterCategoriesUseCase: GetCharacterCategoriesUseCase
+    getCharacterCategoriesUseCase: GetCharacterCategoriesUseCase,
+    checkFavoriteUseCase: CheckFavoriteUseCase,
+    addFavoriteUseCase: AddFavoriteUseCase,
+    removeFavoriteUseCase: RemoveFavoriteUseCase,
+    coroutineDispatchers: CoroutineDispatchers,
 ) : ViewModel() {
 
-    private val _uiState = MutableLiveData<UiState>()
-    val uiState : LiveData<UiState> get() = _uiState
+    val categories = UiActionStateLiveData(
+        coroutineDispatchers.main(),
+        getCharacterCategoriesUseCase
+    )
 
-    fun getCharacterCategories(characterId: Int) = viewModelScope.launch {
+    val favorite = FavoriteUiActionStateLiveData(
+        coroutineDispatchers.main(),
+        checkFavoriteUseCase,
+        addFavoriteUseCase,
+        removeFavoriteUseCase
+    )
+
+//    private val _uiState = MutableLiveData<UiState>()
+//    val uiState : LiveData<UiState> get() = _uiState
+
+//    private val _favoriteUiState = MutableLiveData<FavoriteUiState>()
+//    val favoriteUiState : LiveData<FavoriteUiState> get() = _favoriteUiState
+
+//    init {
+//        favorite.setDefault()
+//        _favoriteUiState.value = FavoriteUiState.FavoriteIcon(R.drawable.ic_favorite_unchecked)
+//    }
+
+//    fun getCharacterCategories(characterId: Int) = viewModelScope.launch {
 //        getComicsUseCase(GetComicsUseCase.GetComicsParams(characterId))
 //            .collect { status ->
 //                when (status) {
@@ -32,68 +52,131 @@ class DetailViewModel @Inject constructor(
 //                }
 //            }
 
-        getCharacterCategoriesUseCase(GetCharacterCategoriesUseCase.GetCategoriesParams(characterId))
-            .watchStatus()
-    }
-
-    private fun Flow<ResultStatus<Pair<List<Comic>, List<Event>>>>.watchStatus() =
-        viewModelScope.launch {
-            collect { status ->
-                _uiState.value = when (status) {
-                    ResultStatus.Loading -> UiState.Loading
-                    is ResultStatus.Success -> {
-//                        val detailChildList = status.data.map { DetailChildVE(it.id, it.imageUrl) }
+//        getCharacterCategoriesUseCase(GetCharacterCategoriesUseCase.GetCategoriesParams(characterId))
+//            .watchStatus(
+//                loading = {
+//                    _uiState.value = UiState.Loading
+//                },
+//                success = { data ->
+//                    val detailParentList = mutableListOf<DetailParentVE>()
 //
-//                        val detailParentList = listOf(
-//                            DetailParentVE(
-//                                R.string.details_comics_category,
-//                                detailChildList
+//                    val comics = data.first
+//
+//                    if (comics.isNotEmpty()) {
+//                        comics.map {
+//                            DetailChildVE(it.id, it.imageUrl)
+//                        }.also {
+//                            detailParentList.add(
+//                                DetailParentVE(R.string.details_comics_category, it)
 //                            )
-//                        )
-
+//                        }
+//                    }
+//
+//                    val events = data.second
+//
+//                    if (events.isNotEmpty()) {
+//                        events.map {
+//                            DetailChildVE(it.id, it.imageUrl)
+//                        }.also {
+//                            detailParentList.add(
+//                                DetailParentVE(R.string.details_events_category, it)
+//                            )
+//                        }
+//                    }
+//
+//                    _uiState.value = if (detailParentList.isNotEmpty()) {
 //                        UiState.Success(detailParentList)
+//                    } else UiState.Empty
+//                },
+//                error = {
+//                    _uiState.value = UiState.Error
+//                }
+//            )
+//    }
 
-                        val detailParentList = mutableListOf<DetailParentVE>()
+//    private fun Flow<ResultStatus<Pair<List<Comic>, List<Event>>>>.watchStatus() =
+//        viewModelScope.launch {
+//            collect { status ->
+//                _uiState.value = when (status) {
+//                    ResultStatus.Loading -> UiState.Loading
+//                    is ResultStatus.Success -> {
+////                        val detailChildList = status.data.map { DetailChildVE(it.id, it.imageUrl) }
+////
+////                        val detailParentList = listOf(
+////                            DetailParentVE(
+////                                R.string.details_comics_category,
+////                                detailChildList
+////                            )
+////                        )
+//
+////                        UiState.Success(detailParentList)
+//
+//                        val detailParentList = mutableListOf<DetailParentVE>()
+//
+//                        val comics = status.data.first
+//
+//                        if (comics.isNotEmpty()) {
+//                            comics.map {
+//                                DetailChildVE(it.id, it.imageUrl)
+//                            }.also {
+//                                detailParentList.add(
+//                                    DetailParentVE(R.string.details_comics_category, it)
+//                                )
+//                            }
+//                        }
+//
+//                        val events = status.data.second
+//
+//                        if (events.isNotEmpty()) {
+//                            events.map {
+//                                DetailChildVE(it.id, it.imageUrl)
+//                            }.also {
+//                                detailParentList.add(
+//                                    DetailParentVE(R.string.details_events_category, it)
+//                                )
+//                            }
+//                        }
+//
+//                        if (detailParentList.isNotEmpty()) {
+//                            UiState.Success(detailParentList)
+//                        } else UiState.Empty
+//
+//                    }
+//                    is ResultStatus.Error -> UiState.Error
+//                }
+//            }
+//    }
 
-                        val comics = status.data.first
+//    fun updateFavorite(detailViewArg: DetailViewArg) = viewModelScope.launch {
+//        detailViewArg.run {
+//            addFavoriteUseCase.invoke(
+//                AddFavoriteUseCase.Params(
+//                    characterId,
+//                    name,
+//                    imageUrl
+//                )
+//            ).watchStatus(
+//                loading = {
+//                    _favoriteUiState.value = FavoriteUiState.Loading
+//                },
+//                success = {
+//                    _favoriteUiState.value = FavoriteUiState.FavoriteIcon(R.drawable.ic_favorite_checked)
+//                },
+//                error = {}
+//            )
+//        }
+//    }
 
-                        if (comics.isNotEmpty()) {
-                            comics.map {
-                                DetailChildVE(it.id, it.imageUrl)
-                            }.also {
-                                detailParentList.add(
-                                    DetailParentVE(R.string.details_comics_category, it)
-                                )
-                            }
-                        }
+//    sealed class UiState {
+//        object Loading : UiState()
+//        data class Success(val detailParentList: List<DetailParentVE>) : UiState()
+//        object Error : UiState()
+//        object Empty : UiState()
+//
+//    }
 
-                        val events = status.data.second
-
-                        if (events.isNotEmpty()) {
-                            events.map {
-                                DetailChildVE(it.id, it.imageUrl)
-                            }.also {
-                                detailParentList.add(
-                                    DetailParentVE(R.string.details_events_category, it)
-                                )
-                            }
-                        }
-
-                        if (detailParentList.isNotEmpty()) {
-                            UiState.Success(detailParentList)
-                        } else UiState.Empty
-
-                    }
-                    is ResultStatus.Error -> UiState.Error
-                }
-            }
-    }
-
-    sealed class UiState {
-        object Loading : UiState()
-        data class Success(val detailParentList: List<DetailParentVE>) : UiState()
-        object Error : UiState()
-        object Empty : UiState()
-
-    }
+//    sealed class FavoriteUiState {
+//        object Loading : FavoriteUiState()
+//        class FavoriteIcon (@DrawableRes val icon: Int) : FavoriteUiState()
+//    }
 }
