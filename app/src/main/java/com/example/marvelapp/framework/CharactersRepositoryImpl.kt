@@ -28,16 +28,16 @@ class CharactersRepositoryImpl @Inject constructor(
         return CharactersPagingSource(remoteDataSource, query)
     }
 
-
-
     override fun getCacheCharacters(
         query: String,
+        orderBy: String,
         pagingConfig: PagingConfig
     ): Flow<PagingData<Character>> {
         return Pager(
             config = pagingConfig,
             remoteMediator = CharactersRemoteMediator(
                 query,
+                orderBy,
                 database,
                 remoteDataSource,
             )
