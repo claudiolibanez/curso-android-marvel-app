@@ -28,7 +28,7 @@ class CharactersViewModel @Inject constructor(
 
     private val action = MutableLiveData<Action>()
     val state: LiveData<UiState> = action
-//        .distinctUntilChanged()
+        .distinctUntilChanged()
         .switchMap { action ->
              when (action) {
                 is Action.Search, Action.Sort -> {

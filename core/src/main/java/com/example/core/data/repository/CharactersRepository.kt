@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface CharactersRepository {
 
-    fun getCharacters(query: String): PagingSource<Int, Character>
+//    fun getCharacters(query: String): PagingSource<Int, Character>
 
     fun getCacheCharacters(
         query: String,
