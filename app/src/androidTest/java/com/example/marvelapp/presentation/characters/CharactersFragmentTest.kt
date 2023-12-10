@@ -59,7 +59,7 @@ class CharactersFragmentTest {
 
         server.enqueue(MockResponse().setBody("characters_p1.json".asJsonString()))
 
-        delay(500)
+        delay(2000)
 
         onView(
             withId(R.id.recycler_characters)
@@ -76,7 +76,7 @@ class CharactersFragmentTest {
             enqueue(MockResponse().setBody("characters_p2.json".asJsonString()))
         }
 
-        delay(500)
+        delay(2000)
 
         // Action
         onView(
@@ -99,7 +99,7 @@ class CharactersFragmentTest {
         // Arrange
         server.enqueue(MockResponse().setResponseCode(404))
 
-        delay(500)
+        delay(2000)
 
         onView(
             withId(R.id.text_initial_loading_error)
