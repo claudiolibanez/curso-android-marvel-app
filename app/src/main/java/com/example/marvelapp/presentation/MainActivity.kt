@@ -22,6 +22,8 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolbarApp)
+
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment_container) as NavHostFragment
 
@@ -30,7 +32,12 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavMain.setupWithNavController(navController)
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.charactersFragment, R.id.favoritesFragment, R.id.aboutFragment)
+            setOf(
+                R.id.charactersFragment,
+                R.id.favoritesFragment,
+                R.id.aboutFragment,
+                R.id.sortFragment
+            )
         )
 
         binding.toolbarApp.setupWithNavController(navController, appBarConfiguration)
