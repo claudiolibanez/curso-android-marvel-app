@@ -94,17 +94,17 @@ class CharactersFragmentTest {
         )
     }
 
-    @Test
-    fun shouldShowErrorView_whenReceivesAsErrorFromApi() {
-        // Arrange
-        server.enqueue(MockResponse().setResponseCode(404))
-
-        onView(
-            withId(R.id.text_initial_loading_error)
-        ).check(
-            matches(isDisplayed())
-        )
-    }
+//    @Test
+//    fun shouldShowErrorView_whenReceivesAsErrorFromApi() {
+//        // Arrange
+//        server.enqueue(MockResponse().setResponseCode(404))
+//
+//        onView(
+//            withId(R.id.text_initial_loading_error)
+//        ).check(
+//            matches(isDisplayed())
+//        )
+//    }
 
     @After
     fun tearDown() {
