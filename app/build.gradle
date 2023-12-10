@@ -15,6 +15,8 @@ def apikeyProperties = new Properties()
 apikeyProperties.load(new FileInputStream(apikeyPropertiesFile))
 
 android {
+    compileSdkVersion 33
+
     signingConfigs {
         release {
             storeFile file('/Users/claudiosoares/www/curso-android-marvel-app/store/marvel_app_key_store')
@@ -23,7 +25,6 @@ android {
             keyAlias 'marvel-app'
         }
     }
-    compileSdkVersion 33
 
     defaultConfig {
         applicationId "com.example.marvelapp"
@@ -130,6 +131,7 @@ dependencies {
     def room_version = "2.4.3"
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-paging:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
     // Paging3
@@ -176,4 +178,6 @@ dependencies {
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:4.9.3"
 
     androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 }
