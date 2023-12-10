@@ -39,7 +39,7 @@ class CharactersFragmentTest {
 
     private lateinit var server: MockWebServer
 
-    val navController = TestNavHostController(
+    private val navController = TestNavHostController(
         ApplicationProvider.getApplicationContext()
     )
 
@@ -59,7 +59,7 @@ class CharactersFragmentTest {
 
         server.enqueue(MockResponse().setBody("characters_p1.json".asJsonString()))
 
-        delay(2000)
+        delay(500)
 
         onView(
             withId(R.id.recycler_characters)
@@ -76,7 +76,7 @@ class CharactersFragmentTest {
             enqueue(MockResponse().setBody("characters_p2.json".asJsonString()))
         }
 
-        delay(2000)
+        delay(500)
 
         // Action
         onView(
@@ -95,11 +95,9 @@ class CharactersFragmentTest {
     }
 
     @Test
-    fun shouldShowErrorView_whenReceivesAsErrorFromApi(): Unit = runBlocking {
+    fun shouldShowErrorView_whenReceivesAsErrorFromApi() {
         // Arrange
         server.enqueue(MockResponse().setResponseCode(404))
-
-        delay(2000)
 
         onView(
             withId(R.id.text_initial_loading_error)
