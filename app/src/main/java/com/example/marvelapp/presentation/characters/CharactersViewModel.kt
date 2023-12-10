@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
-import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingConfig
@@ -28,7 +27,6 @@ class CharactersViewModel @Inject constructor(
 
     private val action = MutableLiveData<Action>()
     val state: LiveData<UiState> = action
-//        .distinctUntilChanged()
         .switchMap { action ->
              when (action) {
                 is Action.Search, Action.Sort -> {

@@ -6,7 +6,6 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.example.core.data.repository.CharactersRemoteDataSource
-import com.example.core.domain.model.Character
 import com.example.marvelapp.framework.db.AppDatabase
 import com.example.marvelapp.framework.db.entity.CharacterEntity
 import com.example.marvelapp.framework.db.entity.RemoteKey

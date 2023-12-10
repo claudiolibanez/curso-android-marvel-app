@@ -10,7 +10,6 @@ import com.example.core.usecase.SaveCharactersSortingUseCase
 import com.example.core.usecase.base.CoroutineDispatchers
 import com.example.marvelapp.presentation.extensions.watchStatus
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @HiltViewModel

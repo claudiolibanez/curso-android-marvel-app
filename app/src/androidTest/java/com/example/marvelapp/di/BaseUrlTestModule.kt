@@ -1,6 +1,5 @@
 package com.example.marvelapp.di
 
-import com.example.marvelapp.BuildConfig
 import com.example.marvelapp.framework.di.qualifier.BaseUrl
 import dagger.Module
 import dagger.Provides

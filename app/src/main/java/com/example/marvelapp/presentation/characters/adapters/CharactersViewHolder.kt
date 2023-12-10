@@ -24,11 +24,6 @@ class CharactersViewHolder(
 
         imageLoader.load(imageCharacter, character.imageUrl)
 
-//        Glide.with(itemView)
-//            .load(character.imageUrl)
-//            .fallback(R.drawable.ic_img_loading_error)
-//            .into(imageCharacter)
-
         itemView.setOnClickListener {
             onItemClick.invoke(character, imageCharacter)
         }

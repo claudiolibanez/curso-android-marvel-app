@@ -2,10 +2,6 @@ package com.example.marvelapp.factory.response
 
 import com.example.core.domain.model.Character
 import com.example.core.domain.model.CharacterPaging
-import com.example.marvelapp.framework.network.response.CharacterResponse
-import com.example.marvelapp.framework.network.response.DataContainerResponse
-import com.example.marvelapp.framework.network.response.DataWrapperResponse
-import com.example.marvelapp.framework.network.response.ThumbnailResponse
 
 class CharacterPagingFactory {
 

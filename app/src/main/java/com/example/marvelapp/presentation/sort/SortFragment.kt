@@ -95,8 +95,6 @@ class SortFragment : BottomSheetDialogFragment() {
 
                         popBackStack()
                     }
-
-//                    binding.flipperApply.displayedChild = FLIPPER_CHILD_BUTTON
                 }
                 is SortViewModel.UiState.ApplyState.Error ->
                     binding.flipperApply.displayedChild = FLIPPER_CHILD_BUTTON

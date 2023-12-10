@@ -68,56 +68,47 @@ class CharactersFragmentTest {
         )
     }
 
-//    @Test
-//    fun shouldLoadMoreCharacters_whenNewPageIsRequested(): Unit = runBlocking {
-//        // Arrange
-//        with(server) {
-//            enqueue(MockResponse().setBody("characters_p1.json".asJsonString()))
-//            enqueue(MockResponse().setBody("characters_p2.json".asJsonString()))
-//        }
-//
-//        delay(500)
-//
-//        // Action
-//        onView(
-//            withId(R.id.recycler_characters)
-//        ).perform(
-//            RecyclerViewActions
-//                .scrollToPosition<CharactersViewHolder>(20)
-//        )
-//
-//        // Assert
-//        onView(
-//            withText("Amora")
-//        ).check(
-//            matches(isDisplayed())
-//        )
-//    }
+    @Test
+    fun shouldLoadMoreCharacters_whenNewPageIsRequested(): Unit = runBlocking {
+        // Arrange
+        with(server) {
+            enqueue(MockResponse().setBody("characters_p1.json".asJsonString()))
+            enqueue(MockResponse().setBody("characters_p2.json".asJsonString()))
+        }
 
-//    @Test
-//    fun shouldShowErrorView_whenReceivesAsErrorFromApi() {
-//        // Arrange
-//        server.enqueue(MockResponse().setResponseCode(404))
-//
-//        onView(
-//            withId(R.id.text_initial_loading_error)
-//        ).check(
-//            matches(isDisplayed())
-//        )
-//    }
+        delay(500)
+
+        // Action
+        onView(
+            withId(R.id.recycler_characters)
+        ).perform(
+            RecyclerViewActions
+                .scrollToPosition<CharactersViewHolder>(20)
+        )
+
+        // Assert
+        onView(
+            withText("Amora")
+        ).check(
+            matches(isDisplayed())
+        )
+    }
+
+    @Test
+    fun shouldShowErrorView_whenReceivesAsErrorFromApi() {
+        // Arrange
+        server.enqueue(MockResponse().setResponseCode(404))
+
+        // Assert
+        onView(
+            withId(R.id.text_initial_loading_error)
+        ).check(
+            matches(isDisplayed())
+        )
+    }
 
     @After
     fun tearDown() {
         server.shutdown()
     }
-
-//    private fun waitFor(delay: Long): ViewAction {
-//        return object : ViewAction {
-//            override fun getConstraints(): Matcher<View> = isRoot()
-//            override fun getDescription(): String = "wait for $delay milliseconds"
-//            override fun perform(uiController: UiController?, view: View?) {
-//                uiController?.loopMainThreadForAtLeast(delay)
-//            }
-//        }
-//    }
 }

@@ -6,7 +6,6 @@ import com.example.core.data.repository.CharactersRepository
 import com.example.core.data.repository.StorageRepository
 import com.example.testing.MainCoroutineRule
 import com.example.testing.model.CharacterFactory
-import com.example.testing.pagingsource.PagingSourceFactory
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -38,7 +37,6 @@ class GetCharactersUseCaseImplTest {
 
     private val hero = CharacterFactory().create(CharacterFactory.Hero.ThreeDMan)
 
-//    private val fakePagingSource = PagingSourceFactory().create(listOf(hero))
     private val fakePagingData = PagingData.from(listOf(hero))
 
     @Before
@@ -55,10 +53,6 @@ class GetCharactersUseCaseImplTest {
             val pagingConfig = PagingConfig(20)
             val orderBy = "ascending"
             val query = "spider"
-
-//            whenever(
-//                charactersRepository.getCharacters("")
-//            ).thenReturn(fakePagingSource)
 
             whenever(
                 charactersRepository.getCacheCharacters(

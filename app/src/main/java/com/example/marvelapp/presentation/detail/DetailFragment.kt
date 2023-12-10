@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
@@ -48,76 +47,15 @@ class DetailFragment : Fragment() {
             transitionName = detailViewArg.name
 
             imageLoader.load(this, detailViewArg.imageUrl)
-
-//            Glide.with(context)
-//                .load(detailViewArg.imageUrl)
-//                .fallback(R.drawable.ic_img_loading_error)
-//                .into(this)
         }
 
-        setSharedelementTransitionOnEnter()
-
-//        viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
-////            val logResult = when (uiState) {
-////                DetailViewModel.UiState.Loading -> "Loading comics..."
-////                is DetailViewModel.UiState.Success -> uiState.comics.toString()
-////                is DetailViewModel.UiState.Error -> "Error when loading comics"
-////            }
-////
-////            Log.d(DetailViewModel::class.simpleName, logResult)
-//
-//            binding.flipperDetail.displayedChild = when (uiState) {
-//                DetailViewModel.UiState.Loading -> FLIPPER_CHILD_POSITION_LOADING
-//                is DetailViewModel.UiState.Success -> {
-//                    binding.recyclerParentDetail.run {
-//                        setHasFixedSize(true)
-//                        adapter = DetailParentAdapter(uiState.detailParentList, imageLoader)
-//                    }
-//
-//                    FLIPPER_CHILD_POSITION_DETAIL
-//                }
-//                is DetailViewModel.UiState.Error -> {
-//                    binding.includeErrorView.buttonRetry.setOnClickListener {
-//                        viewModel.getCharacterCategories(detailViewArg.characterId)
-//                    }
-//                    FLIPPER_CHILD_POSITION_ERROR
-//                }
-//                is DetailViewModel.UiState.Empty -> FLIPPER_CHILD_POSITION_EMPTY
-//            }
-//        }
+        setSharedElementTransitionOnEnter()
 
         loadCategoriesAndObserveUiState(detailViewArg)
-        setAnd0bserveFavoriteUiState(detailViewArg)
-
-//        viewModel.getCharacterCategories(detailViewArg.characterId)
-
-//        binding.imageFavoriteIcon.setOnClickListener {
-//            viewModel.updateFavorite(detailViewArg)
-//        }
+        setAndObserveFavoriteUiState(detailViewArg)
     }
 
     private fun loadCategoriesAndObserveUiState(detailViewArg: DetailViewArg) {
-//        viewModel.uiState.observe(viewLifecycleOwner) { uiState ->
-//            binding.flipperDetail.displayedChild = when (uiState) {
-//                DetailViewModel.UiState.Loading -> FLIPPER_CHILD_POSITION_LOADING
-//                is DetailViewModel.UiState.Success -> {
-//                    binding.recyclerParentDetail.run {
-//                        setHasFixedSize(true)
-//                        adapter = DetailParentAdapter(uiState.detailParentList, imageLoader)
-//                    }
-//
-//                    FLIPPER_CHILD_POSITION_DETAIL
-//                }
-//                is DetailViewModel.UiState.Error -> {
-//                    binding.includeErrorView.buttonRetry.setOnClickListener {
-//                        viewModel.getCharacterCategories(detailViewArg.characterId)
-//                    }
-//                    FLIPPER_CHILD_POSITION_ERROR
-//                }
-//                is DetailViewModel.UiState.Empty -> FLIPPER_CHILD_POSITION_EMPTY
-//            }
-//        }
-
         viewModel.categories.load(detailViewArg.characterId)
         viewModel.categories.state.observe(viewLifecycleOwner) { uiState ->
             binding.flipperDetail.displayedChild = when (uiState) {
@@ -132,7 +70,6 @@ class DetailFragment : Fragment() {
                 }
                 is UiActionStateLiveData.UiState.Error -> {
                     binding.includeErrorView.buttonRetry.setOnClickListener {
-//                        viewModel.getCharacterCategories(detailViewArg.characterId)
                         viewModel.categories.load(detailViewArg.characterId)
                     }
                     FLIPPER_CHILD_POSITION_ERROR
@@ -142,35 +79,7 @@ class DetailFragment : Fragment() {
         }
     }
 
-    private fun setAnd0bserveFavoriteUiState(detailViewArg: DetailViewArg) {
-//        viewModel.favoriteUiState.observe(viewLifecycleOwner) { favoriteUiState ->
-//            binding.flipperFavorite.displayedChild = when (favoriteUiState) {
-//                DetailViewModel.FavoriteUiState.Loading -> FLIPPER_FAVORITE_CHILD_POSITION_LOADING
-//                is DetailViewModel.FavoriteUiState.FavoriteIcon -> {
-//                    binding.imageFavoriteIcon.setImageResource(favoriteUiState.icon)
-//                    FLIPPER_FAVORITE_CHILD_POSITION_SUCCESS
-//                }
-//            }
-//        }
-
-//        binding.imageFavoriteIcon.setOnClickListener {
-//            viewModel.favorite.update(detailViewArg)
-//        }
-//
-//        viewModel.favorite.state.observe(viewLifecycleOwner) { uiState ->
-//            binding.flipperFavorite.displayedChild = when (uiState) {
-//                FavoriteUiActionStateLiveData.UiState.Loading -> FLIPPER_FAVORITE_CHILD_POSITION_LOADING
-//                is FavoriteUiActionStateLiveData.UiState.Icon -> {
-//                    binding.imageFavoriteIcon.setImageResource(uiState.icon)
-//                    FLIPPER_FAVORITE_CHILD_POSITION_IMAGE
-//                }
-//                is FavoriteUiActionStateLiveData.UiState.Error -> {
-//                    showShortToast(uiState.messageResId)
-//                    FLIPPER_FAVORITE_CHILD_POSITION_IMAGE
-//                }
-//            }
-//        }
-
+    private fun setAndObserveFavoriteUiState(detailViewArg: DetailViewArg) {
         viewModel.favorite.run {
             checkFavorite(detailViewArg.characterId)
 
@@ -195,7 +104,7 @@ class DetailFragment : Fragment() {
     }
 
     // Define a animação de transição como "move"
-    private fun setSharedelementTransitionOnEnter() {
+    private fun setSharedElementTransitionOnEnter() {
         TransitionInflater.from(requireContext())
             .inflateTransition(android.R.transition.move).apply {
                 sharedElementEnterTransition = this

@@ -52,7 +52,6 @@ class DetailViewModelTest {
     private lateinit var removeFavoriteUseCase: RemoveFavoriteUseCase
 
     @Mock
-//    private lateinit var uiStateObserver: Observer<DetailViewModel.UiState>
     private lateinit var uiStateObserver: Observer<UiActionStateLiveData.UiState>
 
     @Mock
@@ -66,9 +65,6 @@ class DetailViewModelTest {
 
     @Before
     fun setUp() {
-//        detailViewModel = DetailViewModel(getCharacterCategoriesUseCase)
-//        detailViewModel.uiState.observeForever(uiStateObserver)
-
         detailViewModel = DetailViewModel(
             getCharacterCategoriesUseCase,
             checkFavoriteUseCase,
@@ -95,14 +91,11 @@ class DetailViewModelTest {
                 )
 
             // Act
-//            detailViewModel.getCharacterCategories(character.id)
             detailViewModel.categories.load(character.id)
 
             // Assert
-//            verify(uiStateObserver).onChanged(isA<DetailViewModel.UiState.Success>())
             verify(uiStateObserver).onChanged(isA<UiActionStateLiveData.UiState.Success>())
 
-//            val uiStateSuccess = detailViewModel.uiState.value as DetailViewModel.UiState.Success
             val uiStateSuccess = detailViewModel.categories.state.value as UiActionStateLiveData.UiState.Success
             val categoriesParamList = uiStateSuccess.detailParentList
 
@@ -131,14 +124,11 @@ class DetailViewModelTest {
                 )
 
             // Act
-//            detailViewModel.getCharacterCategories(character.id)
             detailViewModel.categories.load(character.id)
 
             // Assert
-//            verify(uiStateObserver).onChanged(isA<DetailViewModel.UiState.Success>())
             verify(uiStateObserver).onChanged(isA<UiActionStateLiveData.UiState.Success>())
 
-//            val uiStateSuccess = detailViewModel.uiState.value as DetailViewModel.UiState.Success
             val uiStateSuccess = detailViewModel.categories.state.value as UiActionStateLiveData.UiState.Success
             val categoriesParamList = uiStateSuccess.detailParentList
 
@@ -163,14 +153,11 @@ class DetailViewModelTest {
                 )
 
             // Act
-//            detailViewModel.getCharacterCategories(character.id)
             detailViewModel.categories.load(character.id)
 
             // Assert
-//            verify(uiStateObserver).onChanged(isA<DetailViewModel.UiState.Success>())
             verify(uiStateObserver).onChanged(isA<UiActionStateLiveData.UiState.Success>())
 
-//            val uiStateSuccess = detailViewModel.uiState.value as DetailViewModel.UiState.Success
             val uiStateSuccess = detailViewModel.categories.state.value as UiActionStateLiveData.UiState.Success
             val categoriesParamList = uiStateSuccess.detailParentList
 
@@ -195,11 +182,9 @@ class DetailViewModelTest {
                 )
 
             // Act
-//            detailViewModel.getCharacterCategories(character.id)
             detailViewModel.categories.load(character.id)
 
             // Assert
-//            verify(uiStateObserver).onChanged(isA<DetailViewModel.UiState.Empty>())
             verify(uiStateObserver).onChanged(isA<UiActionStateLiveData.UiState.Empty>())
         }
 
@@ -217,11 +202,9 @@ class DetailViewModelTest {
                 )
 
             // Act
-//            detailViewModel.getCharacterCategories(character.id)
             detailViewModel.categories.load(character.id)
 
             // Assert
-//            verify(uiStateObserver).onChanged(isA<DetailViewModel.UiState.Error>())
             verify(uiStateObserver).onChanged(isA<UiActionStateLiveData.UiState.Error>())
         }
 

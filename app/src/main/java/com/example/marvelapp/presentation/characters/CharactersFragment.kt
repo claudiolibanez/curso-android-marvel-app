@@ -47,8 +47,6 @@ class CharactersFragment : Fragment(),
     @Inject
     lateinit var imageLoader: ImageLoader
 
-//    private lateinit var charactersAdapter: CharactersAdapter
-
     private val headerAdapter: CharactersRefreshStateAdapter by lazy {
         CharactersRefreshStateAdapter(
             charactersAdapter::retry
@@ -76,12 +74,6 @@ class CharactersFragment : Fragment(),
             findNavController().navigate(directions, extras)
         }
     }
-
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        setHasOptionsMenu(true)
-//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -121,74 +113,13 @@ class CharactersFragment : Fragment(),
         }
         viewModel.searchCharacters()
 
-//        lifecycleScope.launch {
-//            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//                viewModel.charactersPagingData("").collect { pagingData ->
-//                    charactersAdapter.submitData(pagingData)
-//                }
-//            }
-//        }
-
-//        charactersAdapter.submitList(
-//            fakeList()
-//        )
     }
 
-//    @Suppress("UnusedPrivateMember")
-//    private fun fakeList(): List<Character> {
-//        return listOf(
-//            Character(
-//                "Spider Man",
-//                "https://lumiere-a.akamaihd.net/v1/images/marvelspidermanseries-emeagrid-m_4456fb99.jpeg"
-//            ),
-//            Character(
-//                "Spider Man",
-//                "https://lumiere-a.akamaihd.net/v1/images/marvelspidermanseries-emeagrid-m_4456fb99.jpeg"
-//            ),
-//            Character(
-//                "Spider Man",
-//                "https://lumiere-a.akamaihd.net/v1/images/marvelspidermanseries-emeagrid-m_4456fb99.jpeg"
-//            ),
-//            Character(
-//                "Spider Man",
-//                "https://lumiere-a.akamaihd.net/v1/images/marvelspidermanseries-emeagrid-m_4456fb99.jpeg"
-//            )
-//        )
-//    }
-
     private fun initCharactersAdapter() {
-//        charactersAdapter = CharactersAdapter(
-//            imageLoader
-//        ) { character, view ->
-//            val extras = FragmentNavigatorExtras(
-//                view to character.name
-//            )
-//
-//            val directions = CharactersFragmentDirections
-//                .actionCharactersFragmentToDetailFragment(
-//                    character.name,
-//                    DetailViewArg(
-//                        characterId = character.id,
-//                        name = character.name,
-//                        imageUrl = character.imageUrl
-//                    )
-//                )
-//
-//            findNavController().navigate(directions, extras)
-//        }
-
         postponeEnterTransition()
 
         with(binding.recyclerCharacters) {
-//            scrollToPosition(0)
-
             setHasFixedSize(true)
-
-//            adapter = charactersAdapter.withLoadStateFooter(
-//                footer = CharactersLoadMoreStateAdapter (
-//                    charactersAdapter::retry
-//                )
-//            )
 
             adapter = charactersAdapter.withLoadStateHeaderAndFooter(
                 header = headerAdapter,
@@ -203,35 +134,6 @@ class CharactersFragment : Fragment(),
             }
         }
     }
-
-//    private fun observeInitialLoadingState() {
-//        lifecycleScope.launch {
-//            charactersAdapter.loadStateFlow.collectLatest { loadState ->
-//                binding.flipperCharacters.displayedChild = when (loadState.refresh) {
-//                    is LoadState.Loading -> {
-//                        setShimmerVisibility(true)
-//
-//                        FLIPPER_CHILD_LOADING
-//                    }
-//                    is LoadState.NotLoading -> {
-//                        setShimmerVisibility(false)
-//
-//                        FLIPPER_CHILD_CHARACTERS
-//                    }
-//                    is LoadState.Error -> {
-//                        setShimmerVisibility(false)
-//
-//                        binding.includeErrorView.buttonRetry.setOnClickListener {
-//                            charactersAdapter.retry()
-//                        }
-//
-//                        FLIPPER_CHILD_ERROR
-//                    }
-//                }
-//
-//            }
-//        }
-//    }
 
     private fun observeInitialLoadingState() {
         lifecycleScope.launch {
@@ -312,39 +214,6 @@ class CharactersFragment : Fragment(),
             }
         })
     }
-
-//    @Deprecated("Deprecated in Java")
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.characters_menu_items, menu)
-//
-//        val searchItem = menu.findItem(R.id.menu_search)
-//        searchView = searchItem.actionView as SearchView
-//
-//        searchItem.setOnActionExpandListener(this)
-//
-//        if (viewModel.currentSearchQuery.isNotEmpty()) {
-//            searchItem.expandActionView()
-//            searchView.setQuery(viewModel.currentSearchQuery, false)
-//        }
-//
-//        searchView.run {
-//            isSubmitButtonEnabled = true
-//
-//            setOnQueryTextListener(this@CharactersFragment)
-//        }
-//    }
-
-//    @Deprecated("Deprecated in Java")
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        return when (item.itemId) {
-//            R.id.menu_sort -> {
-//                findNavController().navigate(R.id.action_charactersFragment_to_sortFragment)
-//                true
-//            }
-//
-//            else -> super.onOptionsItemSelected(item)
-//        }
-//    }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.characters_menu_items, menu)

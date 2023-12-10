@@ -1,13 +1,12 @@
 package com.example.core.usecase
 
-import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.core.data.repository.CharactersRepository
 import com.example.core.data.repository.StorageRepository
-import com.example.core.usecase.base.PagingUseCase
 import com.example.core.domain.model.Character
 import com.example.core.usecase.GetCharactersUseCase.GetCharactersParams
+import com.example.core.usecase.base.PagingUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -29,13 +28,6 @@ class GetCharactersUseCaseImpl @Inject constructor(
     GetCharactersUseCase {
 
     override fun createFlowObservable(params: GetCharactersParams): Flow<PagingData<Character>> {
-//        val pagingSource = charactersRepository.getCharacters(params.query)
-
-//        return Pager(
-//            config = params.pagingConfig
-//        ) {
-//            pagingSource
-//        }.flow
 
         val orderBy = runBlocking {
             storageRepository.sorting.first()
