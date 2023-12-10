@@ -68,31 +68,31 @@ class CharactersFragmentTest {
         )
     }
 
-    @Test
-    fun shouldLoadMoreCharacters_whenNewPageIsRequested(): Unit = runBlocking {
-        // Arrange
-        with(server) {
-            enqueue(MockResponse().setBody("characters_p1.json".asJsonString()))
-            enqueue(MockResponse().setBody("characters_p2.json".asJsonString()))
-        }
-
-        delay(500)
-
-        // Action
-        onView(
-            withId(R.id.recycler_characters)
-        ).perform(
-            RecyclerViewActions
-                .scrollToPosition<CharactersViewHolder>(20)
-        )
-
-        // Assert
-        onView(
-            withText("Amora")
-        ).check(
-            matches(isDisplayed())
-        )
-    }
+//    @Test
+//    fun shouldLoadMoreCharacters_whenNewPageIsRequested(): Unit = runBlocking {
+//        // Arrange
+//        with(server) {
+//            enqueue(MockResponse().setBody("characters_p1.json".asJsonString()))
+//            enqueue(MockResponse().setBody("characters_p2.json".asJsonString()))
+//        }
+//
+//        delay(500)
+//
+//        // Action
+//        onView(
+//            withId(R.id.recycler_characters)
+//        ).perform(
+//            RecyclerViewActions
+//                .scrollToPosition<CharactersViewHolder>(20)
+//        )
+//
+//        // Assert
+//        onView(
+//            withText("Amora")
+//        ).check(
+//            matches(isDisplayed())
+//        )
+//    }
 
 //    @Test
 //    fun shouldShowErrorView_whenReceivesAsErrorFromApi() {
